@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital clock with 24hrs format</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+</head>
+<body>
+    <div class="digital-clock">
+        <i class="uil uil-ellipsis-v dot-menu-btn" id="dot-menu-btn"></i>
+        <ul class="dot-menu" id="dot-menu">
+            <li class="menu-item">
+                <span class="clock-format-text">24-hour format</span>
+                <div class="format-switch-btn" data-format="12"></div>
+            </li>
+        </ul>
+        <div class="time">
+            <span class="hours">00</span>
+            <span class="dots">:</span>
+            <span class="minutes">00</span>
+            <div class="right-side">
+                <span class="period">AM/PM</span>
+                <span class="seconds">00</span>
+            </div>
+        </div>
+    </div>
+    <div class="calendar">
+        <span class="calendar">
+            <span class="month-name">Mar</span>,
+            <span class="day-name">Sunday</span>
+            <span class="day-number">6</span>
+            <span class="year">2022</span>
+        </span>
+    </div>
+
+    <script>
+        // JavaScript for switching clock format
+        const formatswitchbtn = document.querySelector(".format-switch-btn");
+
+        formatswitchbtn.addEventListener("click", () => {
+            formatswitchbtn.classList.toggle("active");
+
+            var formtValue = formatswitchbtn.getAttribute("data-format");
+
+            if (formtValue === "12") {
+                formatswitchbtn.setAttribute("data-format", "24");
+            } else {
+                formatswitchbtn.setAttribute("data-format", "12");
+            }
+        });
+
+        // JavaScript for updating the clock
+        function clock() {
+            var today = new Date();
+            var hours = today.getHours();
+            var minutes = today.getMinutes();
+            var seconds = today.getSeconds();
+            var period = "AM";
+
+            if (hours >= 12) {
+                period = "PM";
+            }
+
+            var formtValue = formatswitchbtn.getAttribute("data-format");
+
+            if (formtValue === "12") {
+                hours = hours > 12 ? hours % 12 : hours;
+            }
+
+            if (hours < 10) {
+                hours = "0" + hours;
+            }
+
+            if (minutes < 10) {
+                minutes = "0" + minutes;
+            }
+
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
+
+            document.querySelector(".hours").innerHTML = hours;
+            document.querySelector(".minutes").innerHTML = minutes;
+            document.querySelector(".seconds").innerHTML = seconds;
+            document.querySelector(".period").innerHTML = period;
+        }
+
+        var updateClock = setInterval(clock, 1000);
+
+        // JavaScript for dot menu toggle
+        const dotmenuBtn = document.getElementById("dot-menu-btn");
+        const dotMenu = document.getElementById("dot-menu");
+
+        dotmenuBtn.addEventListener("click", () => {
+            dotMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", (e) => {
+            if (e.target.id !== "dot-menu-btn") {
+                dotMenu.classList.remove("active");
+            }
+        });
+    </script>
+</body>
+</html>
